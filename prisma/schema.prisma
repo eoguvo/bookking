@@ -1,0 +1,73 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  password     String
+  name         String
+  role         Role           @default(CLIENT)
+  appointments Appointment[]
+  Availability Availability[]
+  RefreshToken RefreshToken[]
+  services     Service[]
+}
+
+model Service {
+  id           String        @id @default(uuid())
+  name         String        @unique
+  description  String
+  duration     Int
+  price        Float
+  providerId   String
+  appointments Appointment[]
+  provider     User          @relation(fields: [providerId], references: [id])
+}
+
+model Appointment {
+  id        String   @id @default(uuid())
+  date      DateTime
+  time      DateTime
+  status    Status
+  clientId  String
+  serviceId String
+  client    User     @relation(fields: [clientId], references: [id])
+  service   Service  @relation(fields: [serviceId], references: [id])
+}
+
+model Availability {
+  id         String   @id @default(uuid())
+  date       DateTime
+  startTime  DateTime
+  endTime    DateTime
+  providerId String
+  provider   User     @relation(fields: [providerId], references: [id])
+}
+
+model RefreshToken {
+  id         String   @id @default(uuid())
+  date       DateTime
+  startTime  DateTime
+  endTime    DateTime
+  userId     String
+  expiryDate DateTime
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  CLIENT
+  PROVIDER
+}
+
+enum Status {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
