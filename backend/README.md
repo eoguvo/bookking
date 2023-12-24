@@ -1,6 +1,6 @@
 <div align="center">
-    <img src=".github/Banner.jpg" alt="header Busytrip app"/>
-    <p>A Booking project for users book service with another user</p>
+    <img src="../.github/Banner.jpg" alt="header Busytrip app"/>
+    <p>The backend of the Bookking app</p>
     <a href="https://github.com/eoguvo" >
         <img src="https://img.shields.io/badge/author-Gustavo%20Henrique-blue?style=for-the-badge" alt="author - Gustavo Henrique" />
     </a>
@@ -31,9 +31,15 @@ Summary
     <h1>📝 To Do</h1>
 </div>
 
-- [ ] Server Side
-- [ ] Web App
-- [ ] Mobile App
+- [X] Initial structure
+- [ ] Users
+  - [ ] Auth
+  - [ ] Providers/Clients
+- [ ] Services
+  - [ ] Available time
+  - [ ] Location
+- [ ] Booking
+  - [ ] Relation
 
 <div id="rodando" align="center">
     <h1>🎲 Running</h1>
@@ -49,8 +55,6 @@ Summary
 [Git](https://git-scm.com) and [Node.js (npm)](https://nodejs.org/en/).
 > In addition, it is good to have an editor to work on the code, such as [VSCode](https://code.visualstudio.com/).
 
-## Check the running instructions in each folder (backend, frontend or mobile)
-
 <div id="install" align="center">
     <h4>
         Follow those steps to install:
@@ -58,17 +62,13 @@ Summary
 </div>
 
 ```bash
-# clone the repository in your machine
-$ git clone https://github.com/eoguvo/bookking
-$ cd bookking
+# just
+$ sudo docker compose up
 ```
-## Check the installing instructions in each folder (backend, frontend or mobile)
 
 <div id="techs" align="center">
     <h1>🛠 Tecnologias</h1>
 </div>
-
-# Backend
 
 - [Koa](https://koajs.com/)
 - [Zod](https://zod.dev/)
@@ -77,9 +77,5 @@ $ cd bookking
 - [TypeDI](https://github.com/typestack/typedi)
 - [Routing Controllers](https://github.com/typestack/routing-controllers/)
 
-# Frontend
-
-- [Remix](https://remix.run/)
-
-And [typescript](https://www.typescriptlang.org/) in everything :D
+And [typescript](https://www.typescriptlang.org/)  :D
 

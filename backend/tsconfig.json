@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  "compilerOptions": {
+
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+
+      "@/*": ["./src/*"]
+
+    },
+
+    "strict": true,
+    "newLine": "lf",
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "noUnusedLocals": true,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": true
+
+  }
+
+}

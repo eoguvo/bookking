@@ -1,0 +1,45 @@
+{
+  "name": "booking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "prod": "node dist/main.js",
+    "dev": "tsnd -r tsconfig-paths/register --transpile-only src/main.ts",
+    "dev:migrate": "prisma migrate dev && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/koa": "^2.13.12",
+    "@types/koa__router": "^12.0.4",
+    "@types/koa-bodyparser": "^4.3.12",
+    "@types/node": "^20.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "eslint": "^8.55.0",
+    "prisma": "^5.7.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@koa/multer": "^3.0.2",
+    "@koa/router": "^12.0.1",
+    "@prisma/client": "^5.7.0",
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.1",
+    "reflect-metadata": "^0.2.1",
+    "routing-controllers": "^0.10.4",
+    "typedi": "^0.10.0",
+    "zod": "^3.22.4"
+  }
+}
