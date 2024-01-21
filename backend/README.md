@@ -63,7 +63,7 @@ Summary
 
 ```bash
 # just
-$ sudo docker compose up
+$ docker compose up
 ```
 
 <div id="techs" align="center">

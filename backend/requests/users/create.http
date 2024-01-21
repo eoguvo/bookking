@@ -1,0 +1,46 @@
+## Variables 
+@baseurl = http://localhost:3000/users
+
+### POST users = success
+
+POST {{baseurl}} HTTP/1.1
+content-type: application/json
+
+{
+
+    "name": "John Doe",
+
+    "email": "john@doe.com",
+
+    "password": "1234#ABcd"
+
+}
+
+### POST users = success provider
+
+POST {{baseurl}} HTTP/1.1
+content-type: application/json
+
+{
+
+    "name": "John Doe",
+
+    "email": "john@doe.com",
+
+    "password": "1234#ABcd",
+
+    "role": "PROVIDER"
+
+}
+
+### POST users with wrong fields
+
+POST {{baseurl}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
+
+###

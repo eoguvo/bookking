@@ -1,5 +1,6 @@
-import { Prisma, Role } from "@prisma/client";
 import { Service } from "typedi";
+import { Prisma, Role } from "@prisma/client";
+
 import { prisma } from "@/utils/db";
 
 interface IUser {

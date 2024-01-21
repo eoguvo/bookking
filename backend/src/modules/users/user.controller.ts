@@ -1,10 +1,11 @@
+import { Body, Ctx, Delete, Get, JsonController, Param, Post, Put } from "routing-controllers";
+
 import type { BaseContext, Context } from "koa";
 import { Prisma } from "@prisma/client";
 import { Inject, Service } from "typedi";
-import { Body, Ctx, Delete, Get, JsonController, Param, Post, Put } from "routing-controllers";
 
-import { UserService } from "./user.service";
-import ServiceError from "@/errors/serviceError";
+import { UserService } from "@/modules/users/user.service";
+import { RefreshTokenService } from "../refreshToken/refreshToken.service";
 
 @Service()
 @JsonController("/users")
@@ -12,9 +13,13 @@ export class UserController {
 
     service: UserService;
 
-    constructor( @Inject("UserService") service: UserService ) {
+    refreshTokenService: RefreshTokenService;
+
+    constructor( @Inject("UserService") service: UserService, @Inject("RefreshTokenService") refreshTokenService: RefreshTokenService ) {
 
         this.service = service;
+
+        this.refreshTokenService = refreshTokenService;
 
     }
 
@@ -30,8 +35,6 @@ export class UserController {
     @Get("/")
     public async findAll() {
 
-        console.log(this);
-
         const users = await this.service.findAll();
 
         return { status: 200, message: "Users finded", result: users, errors: []};
@@ -41,41 +44,25 @@ export class UserController {
     @Post("/")
     public async create(@Body() data: Prisma.UserCreateInput, @Ctx() context: Context) {
 
-        try {
+        const user = await this.service.create(data);
 
-            const user = await this.service.create(data);
-    
-            return { status: 200, message: "User created", result: user, errors: []};
+        const refreshToken = await this.refreshTokenService.create(user.id);
 
-        }
+        const expires = new Date(refreshToken.expiryDate);
 
-        catch (error) {
+        const cookieOptions = {
 
-            const isExpectedError = (error instanceof ServiceError);
+            expires,
+            
+            maxAge: expires.getTime() - Date.now(),
+            
+            httpOnly: true,
 
-            if (!isExpectedError) {
+        };
 
-                context.status = 500;
+        context.cookies.set("refreshToken", refreshToken.id, cookieOptions);
 
-                return { status: 500, message: "Oops, something went wrong", result: null, errors: []};
-
-            }
-
-            const statusFromReason = {
-
-                "VALIDATION": 422,
-
-                "UNIQUE": 409
-
-            };
-
-            const status = statusFromReason[error.reason];
-
-            context.status = status;
-
-            return { status, message: error.message, result: null, errors: error.errors };
-
-        }
+        return { status: 200, message: "User created", result: user, errors: []};
 
     }
 

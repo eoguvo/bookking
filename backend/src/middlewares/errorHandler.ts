@@ -51,7 +51,9 @@ export async function errorHandle(context: Context, next: Next) {
 
             "VALIDATION": 422,
 
-            "UNIQUE": 409
+            "UNIQUE": 409,
+
+            "UNAUTHORIZED": 401
 
         };
 

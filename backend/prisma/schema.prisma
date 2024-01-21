@@ -18,6 +18,8 @@ model User {
   Availability Availability[]
   RefreshToken RefreshToken[]
   services     Service[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Service {
@@ -29,6 +31,8 @@ model Service {
   providerId   String
   appointments Appointment[]
   provider     User          @relation(fields: [providerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Appointment {
@@ -40,25 +44,27 @@ model Appointment {
   serviceId String
   client    User     @relation(fields: [clientId], references: [id])
   service   Service  @relation(fields: [serviceId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Availability {
   id         String   @id @default(uuid())
-  date       DateTime
   startTime  DateTime
   endTime    DateTime
   providerId String
   provider   User     @relation(fields: [providerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model RefreshToken {
   id         String   @id @default(uuid())
-  date       DateTime
-  startTime  DateTime
-  endTime    DateTime
   userId     String
   expiryDate DateTime
   user       User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {

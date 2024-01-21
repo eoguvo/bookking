@@ -1,2 +1,2 @@
-export { UserController } from "./user.controller";
-export { UserService } from "./user.service";
+export { UserController } from "@/modules/users/user.controller";
+export { UserService } from "@/modules/users/user.service";

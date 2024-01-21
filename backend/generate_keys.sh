@@ -1,5 +1,6 @@
 if [[ -f keys.txt ]]; then
   echo "Keys file already exists. Using existing keys."
+  exit 1;
 else
   # Generate keys if keys file doesn't exist:
   openssl genrsa -out private.key 4096  # Generate a 4096-bit private key

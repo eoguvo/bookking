@@ -1,0 +1,13 @@
+## Variables 
+@baseurl = http://localhost:3000/users
+
+### GET users
+# @name users
+GET {{baseurl}} HTTP/1.1
+
+### GET user
+@accessToken = {{users.response.body.result[0].id}}
+GET {{baseurl}}/{{accessToken}} HTTP/1.1
+
+### GET user - error
+GET {{baseurl}}/1 HTTP/1.1

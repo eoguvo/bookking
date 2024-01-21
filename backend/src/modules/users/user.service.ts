@@ -1,23 +1,29 @@
-import { Inject, Service } from "typedi";
-import { Prisma } from "@prisma/client";
-import bcrypt from "bcrypt";
-
-import { UserRepository } from "./user.repository";
-import { PrismaErrorCodeUnique } from "@/constants/prisma";
-import ServiceError, { REASON } from "@/errors/serviceError";
-import userSchema from "./user.schema";
+import bcrypt from "bcryptjs";
 import { ZodError } from "zod";
+import { Prisma } from "@prisma/client";
+import { Inject, Service } from "typedi";
+
 import omitField from "@/utils/omitField";
 import formatZodError from "@/utils/formatZodError";
+import { PrismaErrorCodeUnique } from "@/constants/prisma";
+import ServiceError, { REASON } from "@/errors/serviceError";
+
+import userSchema from "@/modules/users/user.schema";
+import { UserRepository } from "@/modules/users/user.repository";
+import { RefreshTokenService } from "@/modules/refreshToken/refreshToken.service";
 
 @Service("UserService")
 export class UserService {
 
     repository: UserRepository;
 
-    constructor( @Inject("UserRepository") repository: UserRepository ) {
+    refreshTokenService: RefreshTokenService;
+
+    constructor( @Inject("UserRepository") repository: UserRepository, @Inject("RefreshTokenService") refreshTokenService: RefreshTokenService ) {
 
         this.repository = repository;
+
+        this.refreshTokenService = refreshTokenService;
 
     }
 
@@ -32,8 +38,9 @@ export class UserService {
         catch(error) {
 
             const isValidationError = 
-                (error instanceof ZodError) &&
-                (Array.isArray(error.issues));
+                (error instanceof ZodError);
+
+            console.log({ error });
 
             if (!isValidationError) {
 
@@ -41,13 +48,16 @@ export class UserService {
                 
             }
 
-            const errors = error.issues.map(formatZodError);
+            const targetErrorList = Array.isArray(error) ? error : error.issues || error.errors;
+
+            const errors = targetErrorList.map(formatZodError);
 
             throw new ServiceError({ errors, message: "Invalid data", name: error.name, reason: REASON.VALIDATION });
 
         }
 
         const salt = await bcrypt.genSalt();
+
         const encryptedPassword = await bcrypt.hash(user.password, salt);
 
         const userWithEncryptedPassword = { ...user, password: encryptedPassword };
@@ -98,14 +108,26 @@ export class UserService {
 
     async findById(id: string) {
 
-        return this.repository.findById(id);
+        const user = await this.repository.findById(id);
+
+        const serializedUser = user ? omitField(user, "password") : null;
+
+        return serializedUser;
 
     }
 
 
     async findAll() {
 
-        return this.repository.findAll();
+        const users = await this.repository.findAll();
+
+        const serializedUsers = users.map(function(user) {
+            
+            return omitField(user, "password");
+
+        });
+
+        return serializedUsers;
 
     }
 
